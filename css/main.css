@@ -1,0 +1,52 @@
+body {
+    background-color: black;
+    color:white;
+}
+.cell {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 1.5em;
+    background-color:cadetblue;
+}
+.hidden{
+    background-color: aqua;
+}
+.board-container{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+.shown0{
+    font-size: 0px;
+}
+.exploaded{
+    background-color: crimson;
+}
+.marked{
+    background-color: orangered;
+}
+h1{
+    text-align: center;
+}
+.ui{
+    background-color: orchid;
+    margin: auto;
+    height: 40px;
+    width: 50%;
+    padding: 5px;
+}
+.ui button{
+    margin-top: 5px;
+    height:75%;
+    border-radius: 5px;
+    background-color:springgreen;
+}
+.ui span{
+    font-size: 30px;
+    vertical-align: middle;
+float: right;
+}
+h2{
+    text-align: center;
+}
