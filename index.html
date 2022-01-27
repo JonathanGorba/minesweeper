@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,16 +10,22 @@
     <script src="js/util.js"></script>
     <link rel="stylesheet" href="css/main.css">
 </head>
+
 <body onload="init()">
-    <h1>mine sweeper</h1>
+    <h1>Mine Sweeper</h1>
     <div class="ui">
+    <div class="button-container">
         <button onclick="setLevel(1)">Beginner</button>
         <button onclick="setLevel(2)">Medium</button>
         <button onclick="setLevel(3)">Expert</button>
-        <span class="lives"></span>
-        <span>lives remaning: &nbsp;</span>
     </div>
-    <div  class="board-container"></div>
+        <div class="smiley"></div>
+        <span class="lives"></span>
+        <span>&nbsp;&nbsp;&nbsp;lives remaning: &nbsp;</span>
+        <span class="timer">0</span>
+    </div>
+    <div class="board-container"></div>
     <h2></h2>
 </body>
+
 </html>
