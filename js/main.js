@@ -166,10 +166,10 @@ function gameOverCheker() {
 
 function gameEnd(status) {
     if (status) {
-        document.querySelector('h2').innerText = 'game won';
+        document.querySelector('h2').innerText = 'GAME WON';
         document.querySelector('.smiley').innerHTML = WIN;
     } else {
-        document.querySelector('h2').innerText = 'game over';
+        document.querySelector('h2').innerText = 'GAME OVER';
         document.querySelector('.smiley').innerHTML = SAD;
     }
     clearInterval(gTimer.interval);
