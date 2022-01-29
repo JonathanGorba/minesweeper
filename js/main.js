@@ -18,6 +18,9 @@ var gBoard;
 var gMinesCount;
 var gLivesCounter;
 var gFirstClick = true;
+var gSafeClickCounter = 3;
+var gHintClick = false;
+var gHintClickCounter = 3;
 
 
 
@@ -34,7 +37,13 @@ function stopEvent(event) {
 
 function init() {
     gFirstClick = true;
+    gHintClick = false;
+    gSafeClickCounter = 3;
+    gHintClickCounter = 3;
     document.querySelector('.smiley').innerHTML = HAPPY
+    document.querySelector('.safeClickContainer span').innerText = gSafeClickCounter;
+    document.querySelector('.hintClickContainer span').innerText = gHintClickCounter;
+    document.querySelector('.hintClickButton').classList.remove('hint');
     gTimer.status = false;
     gTimer.counter = 0;
     document.querySelector('.timer').innerText = 0;
@@ -120,6 +129,14 @@ function cellClicked(elCell, i, j) {
     if (gFirstClick) firstClick(i, j);
     if ((gLivesCounter === 0) || gBoard[i][j].isShown || gBoard[i][j].isMarked) return;
     if (!gTimer.status) startTimer();
+    if (gHintClick) {
+        gHintClick = false;
+        gHintClickCounter--;
+        document.querySelector('.hintClickContainer span').innerText = gHintClickCounter;
+        document.querySelector('.hintClickButton').classList.remove('hint');
+        hintClick(i, j);
+        return;
+    }
     if (!gBoard[i][j].isMine) {
         elCell.classList.add(`shown${gBoard[i][j].minesAroundCount}`);
         renderCell(elCell, gBoard[i][j].minesAroundCount);
@@ -237,4 +254,76 @@ function firstClick(cellI, cellJ) {
     gFirstClick = false;
     plantMines(gBoard, gLevel.mines, cellI, cellJ);
     setMinesNegsCount(gBoard);
+}
+
+function safeClick() {
+    if (gSafeClickCounter === 0) return;
+    gSafeClickCounter--;
+    document.querySelector('.safeClickContainer span').innerText = gSafeClickCounter;
+    console.log(gSafeClickCounter);
+    var safeSpot = safeSpotFinder();
+    var elCell = document.querySelector(`.cell${safeSpot.i}-${safeSpot.j}`);
+    elCell.classList.add('safe');
+    var remove = function () { elCell.classList.remove('safe'); };
+    setTimeout(remove, 1000);
+}
+
+function safeSpotFinder() {
+    var safeSpots = [];
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[0].length; j++) {
+            if (gBoard[i][j].isMine || gBoard[i][j].isShown) continue;
+            safeSpots.push({ 'i': i, 'j': j });
+        }
+    }
+    var safeSpot = safeSpots[getRandomIntInclusive(0, (safeSpots.length - 1))];
+    return safeSpot;
+}
+
+function hintClick(cellI, cellJ) {
+    console.log('enter hint click');
+    for (var i = cellI - 1; i <= cellI + 1; i++) {
+        if (i < 0 || i > gBoard.length - 1) continue;
+        for (var j = cellJ - 1; j <= cellJ + 1; j++) {
+            if (j < 0 || j > gBoard[0].length - 1) continue;
+            // if (i === cellI && j === cellJ) continue;
+            if (gBoard[i][j].isShown) continue;
+            var elCell = document.querySelector(`.cell${i}-${j}`);
+            elCell.classList.add(`shown${gBoard[i][j].minesAroundCount}`);
+            elCell.classList.add(`hint`);
+            renderCell(elCell, gBoard[i][j].minesAroundCount);
+            if (gBoard[i][j].isMine) {
+                renderCell(elCell, MINE);
+            }
+        }
+    }
+    var remove = function () {
+        console.log('remover', cellI, cellJ);
+        for (var i = cellI - 1; i <= cellI + 1; i++) {
+            if (i < 0 || i > gBoard.length - 1) continue;
+            for (var j = cellJ - 1; j <= cellJ + 1; j++) {
+                if (j < 0 || j > gBoard[0].length - 1) continue;
+                // if (i === cellI && j === cellJ) continue;
+                if (gBoard[i][j].isShown) continue;
+                var elCell = document.querySelector(`.cell${i}-${j}`);
+                elCell.classList.remove(`shown${gBoard[i][j].minesAroundCount}`);
+                elCell.classList.remove(`hint`);
+                renderCell(elCell, '');
+                console.log('removed');
+            }
+        }
+    }
+    setTimeout(remove, 1000);
+}
+
+function hintClickToggle() {
+    if (gHintClick || (gHintClickCounter === 0)) {
+        gHintClick = false;
+        document.querySelector('.hintClickButton').classList.remove('hint');
+    }
+    else {
+        gHintClick = true;
+        document.querySelector('.hintClickButton').classList.add('hint');
+    }
+    console.log(gHintClick);
 }
