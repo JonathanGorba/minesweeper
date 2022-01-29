@@ -137,3 +137,7 @@ h2{
 .hint{
     background-color: rgb(255, 191, 212);
 }
+.scoreBoard{
+    text-align: center;
+    margin-top: 10px;
+}

@@ -185,9 +185,11 @@ function gameEnd(status) {
     if (status) {
         document.querySelector('h2').innerText = 'GAME WON';
         document.querySelector('.smiley').innerHTML = WIN;
+        // storeScore();
     } else {
         document.querySelector('h2').innerText = 'GAME OVER';
         document.querySelector('.smiley').innerHTML = SAD;
+        showMines();
     }
     clearInterval(gTimer.interval);
 }
@@ -327,3 +329,39 @@ function hintClickToggle() {
     }
     console.log(gHintClick);
 }
+
+function showMines() {
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[0].length; j++) {
+            if (gBoard[i][j].isMine) {
+                var elCell = document.querySelector(`.cell${i}-${j}`);
+                elCell.classList.add(`exploaded`);
+                renderCell(elCell, MINE);
+                elCell.classList.remove('hidden');
+            }
+        }
+    }
+}
+
+// function storeScore() {
+//     if (localStorage.player) {
+//         localStorage.player = Number(localStorage.player) + 1;
+//     } else {
+//         localStorage.player = 1;
+//     }
+//     var playerName = prompt('Winner, enter your name');
+//     var time = gTimer.counter;
+//     localStorage.scores.localStorage.player = (playerName + 'time:' + time);
+// }
+
+// function printScore() {
+//     var elContainer = document.querySelector('.score');
+//     var strHTML = '<div>'
+//     for (var i = 1; i < localStorage.scores.length; i++) {
+//         strHTML += `<div>${localStorage.scores[i]}</div>`;
+//     }
+//     strHTML += '</div>';
+//     elContainer.innerHTML = strHTML;
+//     // var elDiv = document.querySelector('.score');
+//     // elDiv.innerHTML = localStorage.score;
+// }
